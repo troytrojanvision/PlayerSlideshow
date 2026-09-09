@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Goose Crowder - Slideshow</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .slideshow-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #111;
+  }
+  .slides {
+    display: flex;
+    transition: transform 0.6s ease-in-out;
+  }
+  .slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+  }
+  .slide img {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: contain;
+    display: block;
+  }
+  .nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    font-size: 28px;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    user-select: none;
+    z-index: 2;
+  }
+  .nav-btn:hover {
+    background: rgba(0,0,0,0.8);
+  }
+  .prev-btn { left: 15px; }
+  .next-btn { right: 15px; }
+  .dots {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    z-index: 2;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+  }
+  .dot.active {
+    background: #fff;
+  }
+</style>
+</head>
+<body>
+
+<div class="slideshow-container">
+  <div class="slides" id="slides">
+    <div class="slide"><img src="https://images.sidearmdev.com/resize?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Ftroytrojans.com%2Fimages%2F2025%2F12%2F1%2FCrowder_Goose_JM_1.jpg&height=600&type=webp" alt="Crowder"></div>
+    <div class="slide"><img src="https://images.sidearmdev.com/resize?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Ftroytrojans.com%2Fimages%2F2025%2F7%2F2%2FCrowder_Goose_TF_2.jpg&height=600&type=webp" alt="Crowder"></div>
+    <div class="slide"><img src="https://images.sidearmdev.com/resize?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Ftroytrojans.com%2Fimages%2F2025%2F5%2F14%2FCrowder_Goose_JM_1.jpg&height=600&type=webp" alt="Troy Football"></div>
+    <div class="slide"><img src="https://images.sidearmdev.com/resize?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Ftroytrojans.com%2Fimages%2F2025%2F4%2F9%2FCrowder_Goose_JM_9.jpg&height=600&type=webp" alt="Crowder"></div>
+    <div class="slide"><img src="https://images.sidearmdev.com/resize?url=https%3A%2F%2Fdxbhsrqyrr690.cloudfront.net%2Fsidearm.nextgen.sites%2Ftroytrojans.com%2Fimages%2F2024%2F5%2F29%2FCrowder_Goose_JM_7.jpg&height=600&type=webp" alt="Troy Football at ULM"></div>
+  </div>
+
+  <button class="nav-btn prev-btn" onclick="changeSlide(-1)">&#10094;</button>
+  <button class="nav-btn next-btn" onclick="changeSlide(1)">&#10095;</button>
+
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+  const slidesEl = document.getElementById('slides');
+  const slides = document.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('dots');
+  let index = 0;
+  const total = slides.length;
+
+  for (let i = 0; i < total; i++) {
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goToSlide(i));
+    dotsContainer.appendChild(dot);
+  }
+  const dots = document.querySelectorAll('.dot');
+
+  function updateSlide() {
+    slidesEl.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+  }
+
+  function changeSlide(dir) {
+    index = (index + dir + total) % total;
+    updateSlide();
+  }
+
+  function goToSlide(i) {
+    index = i;
+    updateSlide();
+  }
+
+  // Auto-advance every 4 seconds
+  let autoSlide = setInterval(() => changeSlide(1), 4000);
+
+  const container = document.querySelector('.slideshow-container');
+  container.addEventListener('mouseenter', () => clearInterval(autoSlide));
+  container.addEventListener('mouseleave', () => {
+    autoSlide = setInterval(() => changeSlide(1), 4000);
+  });
+</script>
+
+</body>
+</html>
